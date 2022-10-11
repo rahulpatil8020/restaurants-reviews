@@ -43,7 +43,7 @@ export default class ReviewsController {
 
       if (reviewResponse.modifiedCount === 0) {
         throw new Error(
-          `unable to update review - user may not be orginal poster`
+          "unable to update review - user may not be original poster"
         );
       }
 

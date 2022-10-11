@@ -1,6 +1,7 @@
 import mongodb from "mongodb";
+const ObjectId = mongodb.ObjectID;
 let restaurants;
-const ObjectId = mongodb.ObjectId;
+
 export default class RestaurantsDAO {
   static async injectDB(conn) {
     if (restaurants) {
@@ -58,7 +59,6 @@ export default class RestaurantsDAO {
       return { restaurantsList: [], totalNumRestaurants: 0 };
     }
   }
-
   static async getRestaurantByID(id) {
     try {
       const pipeline = [
@@ -98,7 +98,7 @@ export default class RestaurantsDAO {
       ];
       return await restaurants.aggregate(pipeline).next();
     } catch (e) {
-      console.error(`Something went wrong in getRestaurantsByID: ${e}`);
+      console.error(`Something went wrong in getRestaurantByID: ${e}`);
       throw e;
     }
   }
