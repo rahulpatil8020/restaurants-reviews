@@ -81,8 +81,15 @@ const LandingPage = (props) => {
       find(searchCuisine, "cuisine");
     }
   };
-
-  return <div>Hello</div>;
+  console.log(restaurants);
+  return (
+    <div>
+      {restaurants.map((restaurant) => {
+        console.log("Hello");
+        return <div> Hello </div>;
+      })}
+    </div>
+  );
 };
 
 export default LandingPage;
