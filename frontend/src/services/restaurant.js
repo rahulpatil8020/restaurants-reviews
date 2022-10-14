@@ -1,8 +1,8 @@
 import http from "../http-common";
 
 class RestaurantDataService {
-  getAll(page = 0) {
-    return http.get(`page=${page}`);
+  getAll(page = 0, restaurantsPerPage = 20) {
+    return http.get(`?page=${page}&restaurantsPerPage=${restaurantsPerPage}`);
   }
 
   get(id) {

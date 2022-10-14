@@ -14,12 +14,7 @@ const RestaurantHeader = () => (
   <HeaderContainer
     render={({ isSideNavExpanded, onClickSideNavExpand }) => (
       <Header aria-label="Carbon Tutorial">
-        <SkipToContent />
-        <HeaderMenuButton
-          aria-label="Open menu"
-          onClick={onClickSideNavExpand}
-          isActive={isSideNavExpanded}
-        />
+        {/* <SkipToContent /> */}
         <HeaderName element={Link} to="/restaurants" prefix="">
           Restaurants
         </HeaderName>
