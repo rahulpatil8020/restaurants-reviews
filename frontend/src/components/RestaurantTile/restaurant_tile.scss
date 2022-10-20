@@ -1,0 +1,30 @@
+.restaurant-tile{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 1rem;
+    border: 1px solid gray;
+    width: 20rem;
+    padding: 2rem;
+    border-radius: 10px;
+}
+
+.restaurant-name {
+    font-weight: 700;
+    font-size: x-large;
+}
+
+.restaurant-buttons{
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.restaurant-address{
+    margin-top: 10px;
+}
+
+.restaurant-buttons button {
+    padding: 10px 20px;
+    border-radius: 10px;
+}

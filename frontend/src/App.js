@@ -17,9 +17,12 @@ class App extends Component {
         </Theme>
         <Content>
           <Switch>
-            <Route path="/restaurants" component={LandingPage} />
+            <Route exact path={["/", "/restaurants"]} component={LandingPage} />
             <Route path="/login" component={LoginPage} />
-            <Route path="/repos" component={RestaurantPage} />
+            <Route
+              path="/restaurants/:id"
+              render={(props) => <RestaurantPage {...props} />}
+            />
           </Switch>
         </Content>
       </>
