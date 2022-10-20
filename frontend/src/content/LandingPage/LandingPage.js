@@ -3,6 +3,9 @@ import RestaurantDataService from "../../services/restaurant";
 import { Link } from "react-router-dom";
 import { Pagination } from "@carbon/react";
 import { useHistory } from "react-router";
+import RestaurantTile from "../../components/RestaurantTile/RestaurantTile";
+import "./_landing-page.scss";
+
 const LandingPage = (props) => {
   const [totalRestaurants, setTotalRestaurants] = useState(0);
   const [restaurants, setRestaurants] = useState([]);
@@ -14,7 +17,7 @@ const LandingPage = (props) => {
   const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
-    retrieveRestaurants();
+    retrieveRestaurants({ page: 1, pageSize: 10 });
     retrieveCuisines();
   }, []);
 
@@ -37,7 +40,7 @@ const LandingPage = (props) => {
 
   const retrieveRestaurants = (e) => {
     history.push(
-      `${props.location.pathname}?page=${page}&pageSize=${pageSize}`
+      `${props.location.pathname}?page=${e.page}&pageSize=${e.pageSize}`
     );
     RestaurantDataService.getAll(e?.page, e?.pageSize)
       .then((response) => {
@@ -95,13 +98,6 @@ const LandingPage = (props) => {
         onChange={(e) => {
           setPage(e.page);
           setPageSize(e.pageSize);
-          // {
-          //   pathname: props.location.pathname,
-          //   state: {
-          //     page: e.page,
-          //     pageSize: e.pageSize,
-          //   },
-          // });
           retrieveRestaurants(e);
         }}
         backwardText="Previous page"
@@ -114,9 +110,11 @@ const LandingPage = (props) => {
         totalItems={totalRestaurants}
       />
 
-      {restaurants.map((restaurant) => {
-        return <div> {restaurant.name} </div>;
-      })}
+      <div className="restaurants-list">
+        {restaurants.map((restaurant) => {
+          return <RestaurantTile restaurant={restaurant} />;
+        })}
+      </div>
     </div>
   );
 };
