@@ -5,6 +5,7 @@ import RestaurantHeader from "./components/RestaurantHeader";
 import { Switch, Route } from "react-router-dom";
 import LandingPage from "./content/LandingPage";
 import RestaurantPage from "./content/RestaurantPage";
+import LoginPage from "./content/LoginPage";
 
 class App extends Component {
   user = null;
@@ -16,8 +17,12 @@ class App extends Component {
         </Theme>
         <Content>
           <Switch>
-            <Route exact path="/" component={LandingPage} />
-            <Route path="/restaurant" component={RestaurantPage} />
+            <Route exact path={["/", "/restaurants"]} component={LandingPage} />
+            <Route path="/login" component={LoginPage} />
+            <Route
+              path="/restaurants/:id"
+              render={(props) => <RestaurantPage {...props} />}
+            />
           </Switch>
         </Content>
       </>
