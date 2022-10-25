@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import RestaurantDataService from "../../services/restaurant";
 import { Link } from "react-router-dom";
+import { TextArea } from "@carbon/react";
 
 const Restaurant = (props) => {
   const initialRestaurantState = {
@@ -10,13 +11,37 @@ const Restaurant = (props) => {
     cuisine: "",
     reviews: [],
   };
+  const [reviews, setReviews] = useState([]);
+  const [review, setReview] = useState("");
   const [restaurant, setRestaurant] = useState(initialRestaurantState);
-
+  const [addReview, setAddReview] = useState(false);
   const getRestaurant = (id) => {
     RestaurantDataService.get(id)
       .then((response) => {
         setRestaurant(response.data);
         console.log(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const saveReview = () => {
+    if (review === "") {
+      return;
+    }
+    var data = {
+      text: review,
+      // name: props.user.name,
+      // user_id: props.user.id,
+      restaurant_id: props.match.params.id,
+    };
+
+    RestaurantDataService.createReview(data)
+      .then((response) => {
+        setReviews(reviews.concat(review));
+        setRestaurant({ ...restaurant, reviews: reviews });
+        setReview("");
       })
       .catch((e) => {
         console.log(e);
@@ -46,69 +71,105 @@ const Restaurant = (props) => {
     <div>
       {restaurant ? (
         <div>
-          <h5>{restaurant.name}</h5>
-          <p>
+          <h1>{restaurant.name}</h1>
+          <h5>
             <strong>Cuisine: </strong>
             {restaurant.cuisine}
             <br />
             <strong>Address: </strong>
             {restaurant.address.building} {restaurant.address.street},{" "}
             {restaurant.address.zipcode}
-          </p>
-          <Link
-            to={"/restaurants/" + props.match.params.id + "/review"}
-            className="btn btn-primary"
+          </h5>
+          <div
+            style={{
+              marginTop: "1rem",
+              marginBottom: "1rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
           >
-            Add Review
-          </Link>
-          <h4> Reviews </h4>
-          <div className="row">
-            {restaurant.reviews.length > 0 ? (
-              restaurant.reviews.map((review, index) => {
+            <h3> Reviews </h3>
+            <div>
+              <button
+                onClick={() => {
+                  setAddReview(!addReview);
+                }}
+                style={{
+                  fontSize: "15px",
+                  border: "1px solid gray",
+                  borderRadius: "5px",
+                  padding: "20px 10px",
+                  background: "rgba(211,211,211)",
+                }}
+              >
+                Add Review
+              </button>
+            </div>
+          </div>
+          {addReview ? (
+            <div>
+              <TextArea
+                onChange={(e) => {
+                  setReview(e.target.value);
+                }}
+                value={review}
+                id="review-text-area"
+                invalidText="A valid value is required"
+                labelText="Add a review"
+                placeholder={`You can write what you liked and what you didn't like about ${restaurant.name}`}
+              />
+              <button
+                onClick={saveReview}
+                style={{
+                  margin: "20px 0px",
+                  padding: "7px 25px",
+                  background: "rgba(211,211,211)",
+                  fontWeight: 600,
+                }}
+              >
+                Submit
+              </button>
+            </div>
+          ) : null}
+
+          <div>
+            {reviews.length > 0 ? (
+              reviews.map((review, index) => {
                 return (
-                  <div className="col-lg-4 pb-1" key={index}>
-                    <div className="card">
-                      <div className="card-body">
-                        <p className="card-text">
-                          {review.text}
-                          <br />
-                          <strong>User: </strong>
-                          {review.name}
-                          <br />
-                          <strong>Date: </strong>
-                          {review.date}
-                        </p>
-                        {props.user && props.user.id === review.user_id && (
-                          <div className="row">
-                            <a
-                              onClick={() => deleteReview(review._id, index)}
-                              className="btn btn-primary col-lg-5 mx-1 mb-1"
-                            >
-                              Delete
-                            </a>
-                            <Link
-                              to={{
-                                pathname:
-                                  "/restaurants/" +
-                                  props.match.params.id +
-                                  "/review",
-                                state: {
-                                  currentReview: review,
-                                },
-                              }}
-                              className="btn btn-primary col-lg-5 mx-1 mb-1"
-                            >
-                              Edit
-                            </Link>
-                          </div>
-                        )}
-                      </div>
+                  <div
+                    style={{
+                      maxHeight: "20%",
+                      marginTop: "20px",
+                      padding: "10px 20px",
+                      background: "rgba(211,211,211, 0.2)",
+                      boxShadow: "2px 1px rgba(211,211,211)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <p>
+                        <strong>Rahul Patil</strong>
+                      </p>
+                      <p>Oct 9 2022</p>
                     </div>
+                    <p
+                      style={{
+                        marginTop: "20px",
+                      }}
+                    >
+                      {review}
+                    </p>
                   </div>
                 );
               })
             ) : (
-              <div className="col-sm-4">
+              <div>
                 <p>No reviews yet.</p>
               </div>
             )}
