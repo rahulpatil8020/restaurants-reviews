@@ -160,11 +160,40 @@ const Restaurant = (props) => {
                     </div>
                     <p
                       style={{
-                        marginTop: "20px",
+                        margin: "15px 0",
                       }}
                     >
                       {review}
                     </p>
+                    <div
+                      style={{
+                        gap: "8px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "end",
+                      }}
+                    >
+                      <button
+                        style={{
+                          borderRadius: "4px",
+                          padding: "4px 8px",
+                          border: "none",
+                          background: "rgb(84,180,235)",
+                        }}
+                      >
+                        Update
+                      </button>
+                      <button
+                        style={{
+                          borderRadius: "4px",
+                          padding: "4px 8px",
+                          border: "none",
+                          background: "rgb(212,32,80)",
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 );
               })
