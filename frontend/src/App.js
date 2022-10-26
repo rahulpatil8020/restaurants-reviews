@@ -6,6 +6,7 @@ import { Switch, Route } from "react-router-dom";
 import LandingPage from "./content/LandingPage";
 import RestaurantPage from "./content/RestaurantPage";
 import LoginPage from "./content/LoginPage";
+import { UserContext } from "./model/user-context";
 
 class App extends Component {
   user = null;
@@ -18,7 +19,7 @@ class App extends Component {
         <Content>
           <Switch>
             <Route exact path={["/", "/restaurants"]} component={LandingPage} />
-            <Route path="/login" component={LoginPage} />
+            <Route render={(props) => <LoginPage {...props} />} path="/login" />
             <Route
               path="/restaurants/:id"
               render={(props) => <RestaurantPage {...props} />}
