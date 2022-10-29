@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import RestaurantDataService from "../../services/restaurant";
 import { Link } from "react-router-dom";
 import { TextArea } from "@carbon/react";
+import { UserContext } from "../../model/user-context";
 
 const Restaurant = (props) => {
   const initialRestaurantState = {
@@ -15,6 +16,7 @@ const Restaurant = (props) => {
   const [review, setReview] = useState("");
   const [restaurant, setRestaurant] = useState(initialRestaurantState);
   const [addReview, setAddReview] = useState(false);
+  const [user, setUser] = useContext(UserContext);
   const getRestaurant = (id) => {
     RestaurantDataService.get(id)
       .then((response) => {
@@ -30,13 +32,14 @@ const Restaurant = (props) => {
     if (review === "") {
       return;
     }
+    // console.log(user.name, user.id, review);
     var data = {
       text: review,
-      // name: props.user.name,
-      // user_id: props.user.id,
+      name: user.name,
+      user_id: user.id,
       restaurant_id: props.match.params.id,
     };
-
+    console.log(data);
     RestaurantDataService.createReview(data)
       .then((response) => {
         setReviews(reviews.concat(review));
@@ -134,8 +137,8 @@ const Restaurant = (props) => {
           ) : null}
 
           <div>
-            {reviews.length > 0 ? (
-              reviews.map((review, index) => {
+            {restaurant?.reviews?.length > 0 ? (
+              restaurant?.reviews?.map((review, index) => {
                 return (
                   <div
                     style={{
@@ -154,9 +157,9 @@ const Restaurant = (props) => {
                       }}
                     >
                       <p>
-                        <strong>Rahul Patil</strong>
+                        <strong>{user.name}</strong>
                       </p>
-                      <p>Oct 9 2022</p>
+                      <p>{new Date().toLocaleString()}</p>
                     </div>
                     <p
                       style={{

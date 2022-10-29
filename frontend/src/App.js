@@ -6,12 +6,11 @@ import { Switch, Route } from "react-router-dom";
 import LandingPage from "./content/LandingPage";
 import RestaurantPage from "./content/RestaurantPage";
 import LoginPage from "./content/LoginPage";
-import { UserContext } from "./model/user-context";
+import { UserProvider } from "./model/user-context";
 
-class App extends Component {
-  user = null;
-  render() {
-    return (
+function App() {
+  return (
+    <UserProvider>
       <>
         <Theme theme="g100">
           <RestaurantHeader />
@@ -27,8 +26,8 @@ class App extends Component {
           </Switch>
         </Content>
       </>
-    );
-  }
+    </UserProvider>
+  );
 }
 
 export default App;
